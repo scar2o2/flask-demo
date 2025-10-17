@@ -1,13 +1,12 @@
 from flask import Flask, render_template, request
+import os
 
 app = Flask(__name__)
 
-# Home page route
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# Form submission route
 @app.route('/greet', methods=['POST'])
 def greet():
     name = request.form.get('username')
@@ -16,5 +15,7 @@ def greet():
     return render_template('result.html', message=f"Hello, {name}! Welcome to Flask 😊")
 
 if __name__ == '__main__':
-    app.run(debug=True)
- 
+    # Use the port provided by Render or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    # 0.0.0.0 is required so Render can access the app externally
+    app.run(host='0.0.0.0', port=port)
